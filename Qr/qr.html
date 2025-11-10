@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galerie Carte - Amintiri</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #8e44ad, #3498db);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .book-container {
+        width: 90%;
+        max-width: 900px;
+        height: 600px;
+        position: relative;
+      }
+
+      .page {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        text-align: center;
+        transition: transform 1.2s ease-in-out, opacity 1.2s ease-in-out;
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      .page.active {
+        opacity: 1;
+        transform: scale(1);
+        z-index: 10;
+      }
+
+      /* Stil special pentru copertă */
+      .cover-page {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: white;
+      }
+
+      .cover-image {
+        width: 350px;
+        height: 370px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        border: 5px solid white;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      }
+
+      .cover-title {
+        font-size: 3em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      .cover-subtitle {
+        font-size: 1.4em;
+        opacity: 0.9;
+        margin-bottom: 20px;
+      }
+
+      .cover-instruction {
+        font-size: 1.1em;
+        opacity: 0.8;
+        margin-top: 20px;
+      }
+
+      .page-image {
+        width: 280px;
+        height: 280px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        border: 4px solid #f1f1f1;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .page-text {
+        font-size: 1.3em;
+        color: #2c3e50;
+        line-height: 1.5;
+        max-width: 450px;
+        background: rgba(248, 249, 250, 0.9);
+        padding: 18px;
+        border-radius: 10px;
+        font-weight: 500;
+      }
+
+      .navigation {
+        position: absolute;
+        bottom: -70px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 20px;
+      }
+
+      .nav-btn {
+        padding: 14px 30px;
+        font-size: 1.1em;
+        background: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .nav-btn:hover {
+        background: #c0392b;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .nav-btn:disabled {
+        background: #95a5a6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .page-indicator {
+        position: absolute;
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+      }
+
+      .page-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .page-dot.active {
+        background: white;
+        transform: scale(1.3);
+      }
+
+      .page-number {
+        position: absolute;
+        bottom: 20px;
+        right: 25px;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1em;
+        font-weight: bold;
+      }
+
+      .content-page .page-number {
+        color: #7f8c8d;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="book-container">
+      <div class="page-indicator">
+        <div class="page-dot active" data-page="0"></div>
+        <div class="page-dot" data-page="1"></div>
+        <div class="page-dot" data-page="2"></div>
+        <div class="page-dot" data-page="3"></div>
+      </div>
+
+      <!-- COVERTĂ CU POZĂ -->
+      <div class="page active cover-page" id="page-0">
+        <img
+          src="https://c.pxhere.com/photos/fe/64/gorilla_zoo_series_monkey_monkeys_holland_amsterdam_animal-1245304.jpg!s2"
+          alt="Maimuța din profil"
+          class="cover-image"
+        />
+        <h1 class="cover-title">📖 Amintirile Mele</h1>
+        <p class="cover-subtitle">O călătorie prin momente speciale</p>
+        <p class="cover-instruction">
+          👉 Apasă "Următorul" pentru a începe aventura
+        </p>
+        <div class="page-number">Copertă</div>
+      </div>
+
+      <!-- Pagina 1 -->
+      <div class="page content-page" id="page-1">
+        <img
+          src="https://i.pinimg.com/474x/6b/78/9d/6b789dc44d4ad43178f07840755727b2.jpg"
+          alt="La coafor"
+          class="page-image"
+        />
+        <p class="page-text">
+          "Aici sunt eu când ies de la coafor 💇‍♀️<br />Proaspătă și fericită cu
+          noul meu look!"
+        </p>
+        <div class="page-number">Pagina 1</div>
+      </div>
+
+      <!-- Pagina 2 -->
+      <div class="page content-page" id="page-2">
+        <img
+          src="https://i.pinimg.com/474x/2b/f3/1d/2bf31ddecc916aaca974e758c29ba522.jpg"
+          alt="La terme"
+          class="page-image"
+        />
+        <p class="page-text">
+          "Aici sunt eu când merg la terme 🏊‍♀️<br />Relaxare maximă și energie
+          reîncărcată!"
+        </p>
+        <div class="page-number">Pagina 2</div>
+      </div>
+
+      <!-- Pagina 3 -->
+      <div class="page content-page" id="page-3">
+        <img
+          src="https://i.pinimg.com/474x/51/d0/cf/51d0cf29e46d82d666b6edb6cda4e515.jpg"
+          alt="Pe apă"
+          class="page-image"
+        />
+        <p class="page-text">
+          "Iată-mă mergând pe apă 🌊<br />Simt că pot să ating cerul când sunt
+          așa!"
+        </p>
+        <div class="page-number">Pagina 3</div>
+      </div>
+
+      <div class="navigation">
+        <button class="nav-btn" id="prevBtn" disabled>← Anterior</button>
+        <button class="nav-btn" id="nextBtn">Următorul →</button>
+      </div>
+    </div>
+
+    <script>
+      let currentPage = 0;
+      const pages = document.querySelectorAll(".page");
+      const pageDots = document.querySelectorAll(".page-dot");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+
+      function showPage(pageIndex) {
+        // Ascunde toate paginile
+        pages.forEach((page) => {
+          page.classList.remove("active");
+        });
+
+        // Arată doar pagina curentă
+        pages[pageIndex].classList.add("active");
+
+        // Actualizează indicatorul
+        pageDots.forEach((dot, index) => {
+          dot.classList.toggle("active", index === pageIndex);
+        });
+
+        // Actualizează butoanele
+        prevBtn.disabled = pageIndex === 0;
+
+        if (pageIndex === pages.length - 1) {
+          nextBtn.textContent = "🏁 Sfârșit";
+        } else {
+          nextBtn.textContent = "Următorul →";
+        }
+
+        currentPage = pageIndex;
+      }
+
+      nextBtn.addEventListener("click", () => {
+        if (currentPage < pages.length - 1) {
+          showPage(currentPage + 1);
+        }
+      });
+
+      prevBtn.addEventListener("click", () => {
+        if (currentPage > 0) {
+          showPage(currentPage - 1);
+        }
+      });
+
+      // Navigare cu taste
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" && currentPage < pages.length - 1) {
+          showPage(currentPage + 1);
+        } else if (e.key === "ArrowLeft" && currentPage > 0) {
+          showPage(currentPage - 1);
+        }
+      });
+
+      // Navigare cu click pe puncte
+      pageDots.forEach((dot) => {
+        dot.addEventListener("click", () => {
+          const pageIndex = parseInt(dot.dataset.page);
+          showPage(pageIndex);
+        });
+      });
+
+      // Inițializează prima pagină
+      showPage(0);
+    </script>
+  </body>
+</html>
